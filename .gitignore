@@ -1,0 +1,27 @@
+# Secrets & local env
+.env
+.env.local
+.env.*.local
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# Local runtime data
+*.db
+*.db-shm
+*.db-wal
+*.log
+bot_run.log
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
