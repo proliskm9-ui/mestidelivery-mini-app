@@ -27,6 +27,8 @@ from admin_texts import (
     broadcast_waiting_text,
     broadcast_confirm_text,
     broadcast_done_text,
+    broadcast_started_text,
+    broadcast_cancelled_text,
 )
 
 router = Router()
@@ -137,7 +139,7 @@ async def broadcast_confirm(callback: CallbackQuery, state: FSMContext):
     audience = data.get('audience', 'all')
     users = await get_users_by_audience(audience)
 
-    await callback.message.edit_text('⏳ Рассылка началась...')
+    await callback.message.edit_text(broadcast_started_text())
 
     success, failed = 0, 0
     for user in users:
@@ -162,7 +164,7 @@ async def broadcast_confirm(callback: CallbackQuery, state: FSMContext):
 @router.callback_query(F.data == 'broadcast_cancel', BroadcastState.confirm)
 async def broadcast_cancel(callback: CallbackQuery, state: FSMContext):
     await state.clear()
-    await callback.message.edit_text('❌ Рассылка отменена', reply_markup=admin_keyboard())
+    await callback.message.edit_text(broadcast_cancelled_text(), reply_markup=admin_keyboard())
     await callback.answer()
 
 
