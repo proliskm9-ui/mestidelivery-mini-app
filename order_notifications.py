@@ -9,6 +9,23 @@ ORDER_STATUS_TEXTS = {
         'en': '👨‍🍳 <b>Order #{order_id} is being prepared</b>\n\nYour order is now being prepared at <b>{restaurant_name}</b>.',
         'ka': '👨‍🍳 <b>შეკვეთა #{order_id} მზადდება</b>\n\nთქვენი შეკვეთა უკვე მზადდება <b>{restaurant_name}</b>-ში.',
     },
+    'prep_delayed': {
+        'ru': (
+            '⏱ <b>Заказ #{order_id}: ресторан просит чуть больше времени</b>\n\n'
+            '<b>{restaurant_name}</b> загружен. Ожидаемое время обработки: '
+            '<b>+{delay_minutes} мин</b> (до {until_time}).'
+        ),
+        'en': (
+            '⏱ <b>Order #{order_id}: restaurant needs a bit more time</b>\n\n'
+            '<b>{restaurant_name}</b> is busy. Expected processing time: '
+            '<b>+{delay_minutes} min</b> (until {until_time}).'
+        ),
+        'ka': (
+            '⏱ <b>შეკვეთა #{order_id}: რესტორანს მეტი დრო სჭირდება</b>\n\n'
+            '<b>{restaurant_name}</b> დატვირთულია. მოსალოდნელი დრო: '
+            '<b>+{delay_minutes} წთ</b> ({until_time}-მდე).'
+        ),
+    },
     'delivering': {
         'ru': '🚗 <b>Заказ #{order_id} в пути</b>\n\nКурьер уже везёт ваш заказ. Следите за статусом в приложении.',
         'en': '🚗 <b>Order #{order_id} is on the way</b>\n\nYour courier is already heading to you. Track the status in the app.',
@@ -42,4 +59,6 @@ def format_order_status_message(status: str, language: str, **kwargs) -> str:
         template = ORDER_STATUS_TEXTS.get(status, {}).get('en', 'Order #{order_id} status: {status}')
     kwargs.setdefault('restaurant_name', 'MestiDelivery')
     kwargs.setdefault('order_id', '?')
+    kwargs.setdefault('delay_minutes', '?')
+    kwargs.setdefault('until_time', '—')
     return template.format(status=status, **kwargs)

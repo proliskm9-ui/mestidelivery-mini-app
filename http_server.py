@@ -34,7 +34,9 @@ async def handle_customer_order_status(request: web.Request) -> web.Response:
     language = normalize_language(data.get('language'))
     restaurant_name = (data.get('restaurant_name') or 'MestiDelivery').strip()
 
-    if not order_id or not telegram_user_id or status not in {'accepted', 'preparing', 'delivering', 'delivered'}:
+    if not order_id or not telegram_user_id or status not in {
+        'accepted', 'preparing', 'prep_delayed', 'delivering', 'delivered'
+    }:
         return web.json_response({'ok': False, 'error': 'invalid payload'}, status=400)
 
     text = format_order_status_message(
@@ -42,6 +44,8 @@ async def handle_customer_order_status(request: web.Request) -> web.Response:
         language=language,
         order_id=order_id,
         restaurant_name=restaurant_name,
+        delay_minutes=data.get('delay_minutes', '?'),
+        until_time=data.get('until_time', '—'),
     )
 
     try:
